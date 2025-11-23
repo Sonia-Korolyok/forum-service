@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import router from "../routes/post.routes.js";
+import { ValidationError } from '../utils/errors.js';
 
 const schemas = {
     createPost: Joi.object({
@@ -17,12 +18,7 @@ const validate = schemaName => (req, res, next) => {
     }
     const { error } = schema.validate(req.body);
     if (error) {
-        return res.status(400).send({
-            message: error.message,
-            code: 400,
-            status: 'bad request',
-            path: res.path
-        });
+        throw new ValidationError(error.details[0].message);
     }
     return next();
 }
