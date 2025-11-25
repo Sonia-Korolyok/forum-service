@@ -5,18 +5,19 @@ class PostController {
         try {
             const post = await postService.createPost(req.params.author, req.body);
             return res.status(201).json(post);
-        }catch (error) {
+        } catch (error) {
             return next(error);
         }
     }
 
     async getPostById(req, res, next) {
-        try{
+        try {
             const post = await postService.getPostById(req.params.id);
             return res.json(post);
-        }catch (error) {
+        } catch (error) {
             return next(error);
         }
     }
 }
+
 export default new PostController;

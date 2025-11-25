@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import router from "../routes/post.routes.js";
-import { ValidationError } from '../utils/errors.js';
+import {ValidationError} from '../utils/errors.js';
 
 const schemas = {
     createPost: Joi.object({
@@ -16,7 +16,7 @@ const validate = schemaName => (req, res, next) => {
     if (!schema) {
         return next(new Error(`Schema ${schemaName} not found`));
     }
-    const { error } = schema.validate(req.body);
+    const {error} = schema.validate(req.body);
     if (error) {
         throw new ValidationError(error.details[0].message);
     }

@@ -1,11 +1,10 @@
 import * as postRepository from '../repositories/post.repository.js';
-import { NotFoundError } from '../utils/errors.js';
+import {NotFoundError} from '../utils/errors.js';
 
 class PostService {
     createPost = async (_author, data) => {
         return postRepository.createPost(data);
     };
-
 
 
     getPostById = async (id) => {
