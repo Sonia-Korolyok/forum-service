@@ -3,10 +3,12 @@ import postService from '../services/post.service.js';
 class PostController {
     async createPost(req, res, next) {
         try {
-            const post = await postService.createPost(req.params.author, req.body);
-            return res.status(201).json(post);
-        } catch (error) {
-            return next(error);
+            const postData = { ...req.body, author: req.params.author };
+            console.log(postData)
+            const post = await postService.createPost(postData);
+            res.status(201).json(post);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -20,4 +22,4 @@ class PostController {
     }
 }
 
-export default new PostController;
+export default new PostController();

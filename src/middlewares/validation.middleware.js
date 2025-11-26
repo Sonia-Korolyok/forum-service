@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import router from "../routes/post.routes.js";
 import {ValidationError} from '../utils/errors.js';
 
 const schemas = {
@@ -18,7 +17,7 @@ const validate = schemaName => (req, res, next) => {
     }
     const {error} = schema.validate(req.body);
     if (error) {
-        throw new ValidationError(error.details[0].message);
+        return next(new ValidationError(error.details[0].message));
     }
     return next();
 }
