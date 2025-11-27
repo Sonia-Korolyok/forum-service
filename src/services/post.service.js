@@ -1,18 +1,17 @@
-import * as postRepository from '../repositories/post.repository.js';
-import {NotFoundError} from '../utils/errors.js';
+import postRepository from '../repositories/post.repository.js';
+//import {NotFoundError} from '../utils/errors.js';
 
 class PostService {
-    createPost = async (author, data) => {
-        const postData = { ...data, author };
-        return postRepository.createPost(postData);
+    async createPost (author, data) {
+        return await postRepository.createPost( { ...data, author });
     };
 
 
 
-    getPostById = async (id) => {
-        const post = await postRepository.getPostById(id);
+    async getPostById (id){
+        const post = await postRepository.findPostById(id);
         if (!post) {
-            throw new NotFoundError('Post not found');
+            throw new Error(`Post with id ${id} not found`);
         }
         return post;
     };
@@ -34,8 +33,11 @@ class PostService {
     }
 
     async deletePost(postId) {
-        //todo delete post by id
-        throw new Error('Not implemented');
+        const post = await postRepository.deletePost(postId);
+        if (!post) {
+            throw new Error(`Post with id ${postId} not found`);
+        }
+        return post;
     }
 
     async getPostByTag(tagsString) {

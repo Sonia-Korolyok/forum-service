@@ -1,10 +1,17 @@
 import Post from "../models/post.model.js";
 
 
-export const createPost = async (postData) => {
-    const post = new Post(postData);
-    return post.save();
+class PostRepository {
+    async createPost (postData) {
+        const post = new Post(postData);
+        return post.save();
+    }
+    async findPostById (id) {
+        return Post.findById(id);
+    };
+    async deletePost (id) {
+        return Post.findByIdAndDelete(id);
+    }
 }
-export const getPostById = async (id) => {
-    return Post.findById(id);
-};
+
+export default new PostRepository();

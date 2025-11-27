@@ -1,9 +1,25 @@
-export function errorHandler(err, req, res, next) {
-    console.error(err);
 
+const errorHandler = (err, req, res, next) => {
+    console.error(err.stack);
+    const contains = err.message.includes('not found');
 
-    const status = err.status || 500;
-    const message = err.message || 'Internal Server Error';
+    if (err.message && contains) {
+        return res.status(400).json({
+            status: 'not found',
+            message: err.message,
+            code: 404,
+            path: req.path
+        });
+    }
 
-    res.status(status).json({error: message});
+    return res.status(500).json({
+        status: 'Internal server error',
+        code: 500,
+        message: err.message,
+        path: req.path
+    })
 }
+export default errorHandler;
+
+
+
