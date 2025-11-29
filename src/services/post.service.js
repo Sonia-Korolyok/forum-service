@@ -17,19 +17,30 @@ class PostService {
     };
 
 
-    async addLike(id) {
-        //todo add like to post by id
-        throw new Error('Not implemented');
+    async addLike(postId) {
+        const post = await postRepository.addLike(postId);
+        if (!post) {
+            throw new Error(`Post with id ${postId} not found`);
+        }
+        return post;
     }
+
 
     async getPostsByAuthor(author) {
-        //todo return post by author
-        throw new Error('Not implemented');
+        const posts = await postRepository.getPostsByAuthor(author);
+        if (!posts.length) {
+            throw new Error(`No posts found for author ${author}`);
+        }
+        return posts;
     }
 
+
     async addComment(postId, commenter, message) {
-        //todo add comment by post id
-        throw new Error('Not implemented');
+        const post = await postRepository.addComment(postId, commenter, message);
+        if (!post) {
+            throw new Error(`Post with id ${postId} not found`);
+        }
+        return post;
     }
 
     async deletePost(postId) {
@@ -41,20 +52,31 @@ class PostService {
     }
 
     async getPostByTag(tagsString) {
-        //todo return post by tags. Tags example: python,java,j2ee
-        throw new Error('Not implemented');
+        const posts = await postRepository.getPostByTag(tagsString);
+        if (!posts || posts.length === 0) {
+            throw new Error(`No posts found with tags: ${tagsString}`);
+        }
+        return posts;
     }
+
 
     async getPostsByPeriod(dateFrom, dateTo) {
-        //todo return posts by period
-        throw new Error('Not implemented');
+        const posts = await postRepository.getPostsByPeriod(dateFrom, dateTo);
+        if (!posts || posts.length === 0) {
+            throw new Error(`No posts found between ${dateFrom} and ${dateTo}`);
+        }
+        return posts;
     }
 
+
     async updatePost(id, data) {
-        //todo update post. Data example: "title": "Jakarta EE",
-        //     "tags":["Jakarta EE", "J2EE"]
-        throw new Error('Not implemented');
+        const updatedPost = await postRepository.updatePost(id, data);
+        if (!updatedPost) {
+            throw new Error(`Post with id ${id} not found`);
+        }
+        return updatedPost;
     }
+
 }
 
 export default new PostService();
