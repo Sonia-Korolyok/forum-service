@@ -1,4 +1,5 @@
 import userRepository from '../repositories/userAccountRepository.js';
+import userAccountRepository from "../repositories/userAccountRepository.js";
 
 class UserAccountService {
     async registerUser(user) {
@@ -47,15 +48,29 @@ class UserAccountService {
         return deleted;
     }
 
-    async changeRole(login, role, isAddRole) {
-        const roleUpper = role.toUpperCase();
-        const updated = await userRepository.changeRole(login, roleUpper, isAddRole);
-        if (!updated) {
+    async addRole(login, role) {
+        const roleUpperCase = role.toUpperCase();
+        console.log(roleUpperCase);
+        const userUpdated = await userAccountRepository.addRole(login, roleUpperCase)
+        if(!userUpdated)  {
             const err = new Error(`User with login ${login} not found`);
+
             err.statusCode = 404;
             throw err;
         }
-        return updated;
+        return userUpdated
+    }
+
+    async removeRole(login, role) {
+        const roleUpperCase = role.toUpperCase()
+        const userUpdated = await userAccountRepository.removeRole(login, roleUpperCase)
+        if(!userUpdated) {
+            const err = new Error(`User with login ${login} not found`);
+
+            err.statusCode = 404;
+            throw err;
+        }
+        return userUpdated
     }
 
     async changePassword(login, newPasswords) {

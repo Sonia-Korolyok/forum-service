@@ -13,7 +13,6 @@ class UserAccountController {
 
     async getUser(req, res, next) {
         try {
-            console.log(req.params);
             const user = await userAccountService.getUser(req.params.login);
             return res.json(user);
         } catch (error) {
@@ -38,16 +37,28 @@ class UserAccountController {
             return next(error)
         }
     }
-    async changeRole(req, res, next) {
+
+    async addRole(req, res, next) {
         try {
             const { login, role } = req.params;
-            const { isAddRole } = req.body;
-            const account = await userAccountService.changeRoles(login, role, isAddRole);
+            console.log(role);
+            const account = await userAccountService.addRole(login, role, true);
             return res.status(200).json(account);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     }
+
+    async removeRole(req, res, next) {
+        try {
+            const { login, role } = req.params;
+            const account = await userAccountService.removeRole(login, role, false);
+            return res.status(200).json(account);
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
 }
 

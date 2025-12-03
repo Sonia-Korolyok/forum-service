@@ -18,20 +18,13 @@ class UserAccountRepository {
         return UserAccount.findById(login);
     }
 
-    async changeRole(login, role, isAddRole) {
-        if (isAddRole) {
-            return UserAccount.findOneAndUpdate(
-                { login },
-                { $addToSet: { roles: role } },
-                { new: true }
-            );
-        } else {
-            return UserAccount.findOneAndUpdate(
-                { login },
-                { $pull: { roles: role } },
-                { new: true }
-            );
-        }
+    addRole(login, role) {
+        console.log(role);
+        return UserAccount.findByIdAndUpdate(login, {$addToSet: {roles: role}}, {new: true})
+    }
+
+    removeRole(login, role) {
+        return UserAccount.findByIdAndUpdate(login, {$pull: {roles: role}}, {new: true})
     }
 }
 

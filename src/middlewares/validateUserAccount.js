@@ -14,9 +14,14 @@ const userSchemas = {
         lastName: Joi.string(),
         roles: Joi.array().items(Joi.string())
     }),
-    changeRole: Joi.object({
-        role: Joi.string().required(),
-        isAddRole: Joi.boolean().required()
+    addRole: Joi.object({
+        login: Joi.string().required(),
+        role: Joi.string().valid('USER', 'ADMIN', 'MODERATOR').required()
+    }),
+
+    removeRole: Joi.object({
+        login: Joi.string().required(),
+        role: Joi.string().valid('USER', 'ADMIN', 'MODERATOR').required()
     }),
     login: Joi.object({
         login: Joi.string().required(),
