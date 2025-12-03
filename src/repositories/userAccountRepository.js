@@ -15,7 +15,7 @@ class UserAccountRepository {
     }
 
     async getUser(login) {
-        return UserAccount.findOne({login});
+        return UserAccount.findById(login);
     }
 
     async changeRole(login, role, isAddRole) {

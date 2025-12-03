@@ -13,6 +13,7 @@ class UserAccountController {
 
     async getUser(req, res, next) {
         try {
+            console.log(req.params);
             const user = await userAccountService.getUser(req.params.login);
             return res.json(user);
         } catch (error) {
