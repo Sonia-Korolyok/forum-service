@@ -1,30 +1,32 @@
-import UserAccount from '../models/UserAccount.js';
+import UserAccount from '../models/UserAccount.model.js';
 
 class UserAccountRepository {
-    async registerUser(data) {
-        const user = new UserAccount(data);
-        return user.save();
+    async addrUser(user) {
+        const userAccount = new UserAccount(user);
+        return userAccount.save();
     }
 
-    async updateUser(id, data) {
-        return UserAccount.findByIdAndUpdate(id, data, {new: true});
+    async updateUser(login, user) {
+        return UserAccount.findByIdAndUpdate(login, user, {new: true});
     }
 
-    async deleteUser(id) {
-        return UserAccount.findByIdAndDelete(id);
+    async removeUser(login) {
+        return UserAccount.findByIdAndDelete(login);
     }
 
-    async getUser(login) {
+    async findUser(login) {
         return UserAccount.findById(login);
     }
 
-    addRole(login, role) {
-        console.log(role);
+    async addRole(login, role) {
         return UserAccount.findByIdAndUpdate(login, {$addToSet: {roles: role}}, {new: true})
     }
 
-    removeRole(login, role) {
+    async removeRole(login, role) {
         return UserAccount.findByIdAndUpdate(login, {$pull: {roles: role}}, {new: true})
+    }
+    async changePassword(login, password) {
+        return UserAccount.findByIdAndUpdate(login, password, {new: true})
     }
 }
 

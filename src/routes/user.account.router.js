@@ -1,18 +1,16 @@
-import { Router } from 'express';
-import userAccountController from '../controllers/user.account.controller.js';
-import  validate  from '../middlewares/validateUserAccount.js';
+
+import {Router} from "express";
+import userAccountController from "../controllers/user.account.controller.js";
+
 const router = Router();
 
-router.post('/register', validate('register'), userAccountController.registerUser);
-router.get('/user/:login', validate('getUser', 'params') ,userAccountController.getUser)
-router.delete('/user/:login', validate('deleteUser', 'params'), userAccountController.deleteUser)
-router.patch('/user/:login/role/:role', validate('addRole', 'params'), userAccountController.addRole);
-router.delete('/user/:login/role/:role', validate('removeRole', 'params'),userAccountController.removeRole);
-router.patch('/:login', validate('updateUser'), userAccountController.updateUser);
-
+router.post('/register', userAccountController.register);
+router.post('/login', userAccountController.login);
+router.delete('/user/:user', userAccountController.deleteUser);
+router.patch('/user/:user', userAccountController.updateUser);
+router.patch('/user/:user/role/:role', userAccountController.addRole);
+router.delete('/user/:user/role/:role', userAccountController.deleteRole);
+router.patch('/password', userAccountController.changePassword);
+router.get('/user/:user', userAccountController.getUser);
 
 export default router;
-
-
-
-
