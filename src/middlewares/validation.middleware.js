@@ -40,7 +40,7 @@ const schemas = {
     }),
 
     changePassword: Joi.object({
-        newPassword: Joi.string().min(4).required()
+        password: Joi.string().min(4).required()
     })
 }
 
