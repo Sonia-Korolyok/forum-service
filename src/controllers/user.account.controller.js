@@ -54,8 +54,21 @@ class UserAccountController {
     }
 
     async changePassword(req, res, next) {
-        // TODO change password in controller
+        try {
+            const { newPassword } = req.body;
+            const login = req.params.login;
+
+            const result = await userAccountService.changePassword(login, newPassword);
+
+            res.status(200).json({
+                message: 'Password changed successfully',
+                login: result.login
+            });
+        } catch (error) {
+            next(error);
+        }
     }
+
 
     async getUser(req, res, next) {
         try {

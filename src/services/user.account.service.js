@@ -4,7 +4,7 @@ import userAccountRepository from "../repositories/userAccountRepository.js";
 class UserAccountService {
     async register(user) {
         try{
-            return await userAccountRepository.addrUser(user)
+            return await userAccountRepository.addUser(user)
         }catch (e){
             console.log(e);
             throw new Error("User account already exists");
@@ -51,8 +51,11 @@ class UserAccountService {
     }
 
     async changePassword(login, newPasswords) {
-        // TODO:
-        throw new Error('Not implemented');
+        const userAccount = await userRepository.changePassword(login, newPasswords);
+        if (!userAccount) {
+            throw new Error(`User with login ${login} not found`);
+        }
+
     }
 }
 

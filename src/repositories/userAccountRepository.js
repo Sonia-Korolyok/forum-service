@@ -1,7 +1,7 @@
 import UserAccount from '../models/UserAccount.model.js';
 
 class UserAccountRepository {
-    async addrUser(user) {
+    async addUser(user) {
         const userAccount = new UserAccount(user);
         return userAccount.save();
     }
@@ -25,8 +25,11 @@ class UserAccountRepository {
     async removeRole(login, role) {
         return UserAccount.findByIdAndUpdate(login, {$pull: {roles: role}}, {new: true})
     }
-    async changePassword(login, password) {
-        return UserAccount.findByIdAndUpdate(login, password, {new: true})
+
+    async changePassword(login, newPassword) {
+        const userAccount = await UserAccount.findById(login);
+        userAccount.password = newPassword;
+        return userAccount.save();
     }
 }
 

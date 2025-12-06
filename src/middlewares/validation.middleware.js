@@ -19,6 +19,29 @@ const schemas = {
         dateFrom: Joi.date().iso().required(),
         dateTo: Joi.date().iso().required()
     }),
+    registerUser: Joi.object({
+        login: Joi.string().required(),
+        password: Joi.string().required(),
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required()
+    }),
+
+    updateUser: Joi.object({
+        firstName: Joi.string(),
+        lastName: Joi.string()
+    }),
+
+    roleManagement: Joi.object({
+        login: Joi.string().required(),
+        role: Joi.string()
+            .valid('ADMIN', 'MODERATOR', 'USER')
+            .case('upper')
+            .required()
+    }),
+
+    changePassword: Joi.object({
+        newPassword: Joi.string().min(4).required()
+    })
 }
 
 const validate = (schemaName, target = 'body') => (req, res, next) => {
