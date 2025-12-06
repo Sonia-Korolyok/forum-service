@@ -31,7 +31,7 @@ const schemas = {
         lastName: Joi.string()
     }),
 
-    roleManagement: Joi.object({
+    roleManage: Joi.object({
         login: Joi.string().required(),
         role: Joi.string()
             .valid('ADMIN', 'MODERATOR', 'USER')
