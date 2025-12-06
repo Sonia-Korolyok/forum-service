@@ -28,6 +28,7 @@ class UserAccountRepository {
 
     async changePassword(login, newPassword) {
         const userAccount = await UserAccount.findById(login);
+        if (!userAccount) return null;
         userAccount.password = newPassword;
         return userAccount.save();
     }
