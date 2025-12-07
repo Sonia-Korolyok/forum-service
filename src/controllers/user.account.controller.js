@@ -12,7 +12,8 @@ class UserAccountController {
     }
 
     async login(req, res, next) {
-        // TODO login in controller
+        const userAccount = await userAccountService.getUser(req.principal.username);
+        return res.json(userAccount);
     }
 
     async deleteUser(req, res, next) {
@@ -54,19 +55,21 @@ class UserAccountController {
     }
 
     async changePassword(req, res, next) {
-
-            const { password } = req.body;
-            const login = req.params.user;
-
-        try {
-            await userAccountService.changePassword(login, password);
-
-            res.status(204).json({
-                message: 'Password changed successfully',
-            });
-        } catch (error) {
-            next(error);
-        }
+        await userAccountService.changePassword(req.principal.username, req.body.password)
+        return res.sendStatus(204);
+        //
+        //     const { password } = req.body;
+        //     const login = req.params.user;
+        //
+        // try {
+        //     await userAccountService.changePassword(login, password);
+        //
+        //     res.status(204).json({
+        //         message: 'Password changed successfully',
+        //     });
+        // } catch (error) {
+        //     next(error);
+        // }
     }
 
 
