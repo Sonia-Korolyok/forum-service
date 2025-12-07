@@ -7,19 +7,23 @@ const schemas = {
         content: Joi.string().required(),
         tags: Joi.array().items(Joi.string())
     }),
+
     addComment: Joi.object({
-        message: Joi.string().required(),
+        message: Joi.string().required()
     }),
+
     updatePost: Joi.object({
         title: Joi.string(),
         content: Joi.string(),
         tags: Joi.array().items(Joi.string())
     }),
+
     dateFormat: Joi.object({
         dateFrom: Joi.date().iso().required(),
         dateTo: Joi.date().iso().required()
     }),
-    registerUser: Joi.object({
+
+    register: Joi.object({
         login: Joi.string().required(),
         password: Joi.string().required(),
         firstName: Joi.string().required(),
@@ -28,19 +32,12 @@ const schemas = {
 
     updateUser: Joi.object({
         firstName: Joi.string(),
-        lastName: Joi.string()
+        lastName: Joi.string(),
     }),
 
-    roleManage: Joi.object({
-        login: Joi.string().required(),
-        role: Joi.string()
-            .valid('ADMIN', 'MODERATOR', 'USER')
-            .case('upper')
-            .required()
-    }),
-
-    changePassword: Joi.object({
-        password: Joi.string().min(4).required()
+    changeRoles: Joi.object({
+        role: Joi.string().valid('User', 'Moderator', 'Administrator').insensitive().required(),
+        user: Joi.string().required()
     })
 }
 
@@ -50,8 +47,6 @@ const validate = (schemaName, target = 'body') => (req, res, next) => {
     if(!schema) {
         return next(new Error(`Schema ${schemaName} not found`))
     }
-    console.log(req[target]);
-
     const { error } = schema.validate(req[target]);
     if(error) {
         return res.status(400).send({

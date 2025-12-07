@@ -1,4 +1,5 @@
-import UserAccount from '../models/UserAccount.model.js';
+
+import UserAccount from '../models/userAccount.model.js';
 
 class UserAccountRepository {
     async addUser(user) {
@@ -6,31 +7,32 @@ class UserAccountRepository {
         return userAccount.save();
     }
 
-    async updateUser(login, user) {
-        return UserAccount.findByIdAndUpdate(login, user, {new: true});
+    async findUser(login) {
+        return UserAccount.findById(login);
     }
 
     async removeUser(login) {
         return UserAccount.findByIdAndDelete(login);
     }
 
-    async findUser(login) {
-        return UserAccount.findById(login);
+    async updateUser(login, user){
+        return UserAccount.findByIdAndUpdate(login, user, {new: true});
     }
 
     async addRole(login, role) {
-        return UserAccount.findByIdAndUpdate(login, {$addToSet: {roles: role}}, {new: true})
+        return UserAccount.findByIdAndUpdate(login, {$addToSet: {roles: role}}, {new: true});
     }
 
     async removeRole(login, role) {
-        return UserAccount.findByIdAndUpdate(login, {$pull: {roles: role}}, {new: true})
+        return UserAccount.findByIdAndUpdate(login, {$pull: {roles: role}}, {new: true});
     }
 
-    async changePassword(login, newPassword) {
-        const userAccount = await UserAccount.findById(login);
-        if (!userAccount) return null;
-        userAccount.password = newPassword;
-        return userAccount.save();
+    async changePassword(login, password) {
+        const user = await UserAccount.findById(login);
+        if(user){
+            user.password = password;
+            return await user.save();
+        }
     }
 }
 
