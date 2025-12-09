@@ -35,13 +35,26 @@ class PostService {
         return post;
     }
 
-    async deletePost(postId) {
-        const post = await postRepository.deletePost(postId);
-        if(!post) {
-            throw new Error(`Post with id ${postId} not found`)
+    async deletePost(postId, principal) {
+        const post = await postRepository.findPostById(postId);
+
+        if (!post) {
+            const err = new Error(`Post with id ${postId} not found`);
+            err.statusCode = 404;
+            throw err;
         }
-        return post;
+        const isModerator = principal.roles.includes('MODERATOR');
+        const isOwner = principal.username === post.author;
+
+        if (!isModerator && !isOwner) {
+            const err = new Error('Forbidden: Moderator or post owner required');
+            err.statusCode = 403;
+            throw err;
+        }
+
+        return postRepository.deletePost(postId);
     }
+
 
     async getPostsByTags(tagsString) {
         const tags = tagsString.split(',').map(tag => tag.trim().toLowerCase());

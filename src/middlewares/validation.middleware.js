@@ -39,7 +39,8 @@ const schemas = {
     changeRoles: Joi.object({
         role: Joi.string().valid(USER, MODERATOR, ADMIN).insensitive().required(),
         user: Joi.string().required()
-    })
+    }),
+    changePassword: Joi.object({password: Joi.string().required()}),
 }
 
 const validate = (schemaName, target = 'body') => (req, res, next) => {
