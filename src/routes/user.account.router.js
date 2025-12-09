@@ -14,9 +14,9 @@ router.delete('/user/:user', authentication,
 router.patch('/user/:user', authentication,
     authorization('OWNER'), validate('updateUser'), userAccountController.updateUser);
 router.patch('/user/:user/role/:role', authentication,
-    authorization('ADMIN'), validate('changeRoles', 'params'), userAccountController.addRole);
+    authorization('ADMINISTRATOR'), validate('changeRoles', 'params'), userAccountController.addRole);
 router.delete('/user/:user/role/:role', authentication,
-    authorization('ADMIN'), validate('changeRoles', 'params'), userAccountController.deleteRole);
+    authorization('ADMINISTRATOR'), validate('changeRoles', 'params'), userAccountController.deleteRole);
 router.patch('/password', authentication, validate('changePassword'), userAccountController.changePassword);
 router.get('/user/:user', authentication,
     authorization('AUTHENTICATED'), userAccountController.getUser);
