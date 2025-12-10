@@ -14,7 +14,7 @@ const authentication = async (req, res, next) => {
         if (!userAccount || !(await userAccount.comparePassword(password))) {
             return res.status(401).json({message: 'Invalid credentials'});
         }
-        // req.headers.authorization = '';
+        req.headers.authorization = '';
         req.principal = {username: login, roles: userAccount.roles};
     }
     return next();

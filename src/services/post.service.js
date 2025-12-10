@@ -65,12 +65,15 @@ class PostService {
         return await postRepository.findPostsByPeriod(new Date(dateFrom), new Date(dateTo));
     }
 
-    async updatePost(postId, data) {
+    async updatePost(postId, data, user) {
         const post = await postRepository.findPostById(postId);
         if (!post) {
             throw new Error(`Post with id ${postId} not found`);
         }
-        if (data.tags) {
+        if (data.author !== user.username){
+            throw new Error('Forbidden: post owner required');
+        }
+            if (data.tags) {
             data.tags.push(...post.tags);
         }
         return await postRepository.updatePost(postId, data);

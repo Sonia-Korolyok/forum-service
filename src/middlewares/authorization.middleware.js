@@ -1,5 +1,3 @@
-
-
 const authorization = (rule) => (req, res, next) => {
     const user = req.principal; // username, roles
 
@@ -10,11 +8,13 @@ const authorization = (rule) => (req, res, next) => {
     }
 
     if (!user) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({message: 'Unauthorized'});
     }
 
     const isOwnerByLogin = () => user.username === req.params.user;
     const isOwnerByAuthor = () => user.username === req.params.author;
+    const isOwnerByComment = () => user.username === req.params.commenter;
+
     const hasRole = (role) => user.roles?.includes(role);
     console.log(user.roles);
 
@@ -37,7 +37,7 @@ const authorization = (rule) => (req, res, next) => {
             ok = isOwnerByLogin() || hasRole('ADMINISTRATOR');
             break;
         case 'ADMINISTRATOR':
-            console.log(`ADMIN: ${rule}` );
+            console.log(`ADMIN: ${rule}`);
             ok = hasRole('ADMINISTRATOR');
             break;
         case 'MOD_OR_OWNER':
@@ -46,12 +46,15 @@ const authorization = (rule) => (req, res, next) => {
         case 'LOGIN_EQ_AUTHOR':
             ok = isOwnerByAuthor();
             break;
+        case 'LOGIN_EQ_COMMENTER':
+            ok = isOwnerByComment();
+            break;
         default:
             ok = false;
     }
     console.log(user.roles, 'hasRole: ', hasRole('ADMINISTRATOR'))
     if (!ok) {
-        return res.status(403).json({ message: 'Forbidden' });
+        return res.status(403).json({message: 'Forbidden'});
     }
 
     next();
