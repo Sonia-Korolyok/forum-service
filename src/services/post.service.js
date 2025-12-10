@@ -70,9 +70,9 @@ class PostService {
         if (!post) {
             throw new Error(`Post with id ${postId} not found`);
         }
-        if (data.author !== user.username){
-            throw new Error('Forbidden: post owner required');
-        }
+        // if (data.author !== user.username){
+        //     throw new Error('Forbidden: post owner required');
+        // }
             if (data.tags) {
             data.tags.push(...post.tags);
         }
